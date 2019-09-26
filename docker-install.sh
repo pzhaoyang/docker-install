@@ -1,8 +1,5 @@
 #!/bin/sh
-
-arch=`dpkg --print-architecture`
-
-sudo apt-get remove -y docker docker-engine docker.io containerd runc
+sudo apt purge docker-ce docker-ce-cli containerd.io -y && sudo apt autoremove -y
 
 sudo apt-get install -y \
     apt-transport-https \
@@ -14,13 +11,13 @@ sudo apt-get install -y \
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 sudo add-apt-repository \
-   "deb [arch=${arch}] https://download.docker.com/linux/ubuntu \
+   "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
 
 
 sudo apt-get update -y
 
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce=18.06.3~ce~3-0~ubuntu docker-ce-cli=18.06.3~ce~3-0~ubuntu containerd.io
 
 sudo usermod -aG docker ${USER}
